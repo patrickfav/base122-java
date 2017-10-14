@@ -14,7 +14,7 @@ public class Base122Test {
     }
 
     @Test
-    public void encode2Bytes() throws Exception {
+    public void next7bitOf2Bytes() throws Exception {
         Base122.Encoder encoder = new Base122.Encoder(new byte[]{
                 (byte) 0b0111111_0,
                 (byte) 0b000001_01
@@ -26,7 +26,7 @@ public class Base122Test {
     }
 
     @Test
-    public void encode3Bytes() throws Exception {
+    public void next7bitOf3Bytes() throws Exception {
         Base122.Encoder encoder = new Base122.Encoder(new byte[]{
                 (byte) 0b0111111_0,
                 (byte) 0b000001_01,
@@ -40,18 +40,18 @@ public class Base122Test {
     }
 
     @Test
-    public void encode5Bytes() throws Exception {
+    public void next7bitOf5Bytes() throws Exception {
         Base122.Encoder encoder = new Base122.Encoder(new byte[]{
                 (byte) 0b0111101_0,
                 (byte) 0b001001_01,
-                (byte) 0b10001_010,
+                (byte) 0b00001_010,
                 (byte) 0b0010_0110,
                 (byte) 0b011_01100
         });
 
         assertExpected(0b0_0111101, encoder.next7Bit());
         assertExpected(0b0_0001001, encoder.next7Bit());
-        assertExpected(0b0_0110001, encoder.next7Bit());
+        assertExpected(0b0_0100001, encoder.next7Bit());
         assertExpected(0b0_0100010, encoder.next7Bit());
         assertExpected(0b0_0110011, encoder.next7Bit());
         assertExpected(0b0_0110000, encoder.next7Bit());
