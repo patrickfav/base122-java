@@ -1,4 +1,4 @@
-package at.favre.encoding.util;
+package at.favre.lib.encoding.util;
 
 import java.nio.ByteBuffer;
 import java.util.ArrayList;

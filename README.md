@@ -24,15 +24,13 @@ Use maven (3.1+) to create a jar including all dependencies
 
 ## Tech Stack
 
-* Java 8
+* Java 7
 * Maven
-* rxjava2, apache-commons-codec, apache-commons-cli, Retrofit 2
-* Proguard, Launch4j, Jar Signing
+* Jar Signing
 
 # Credits
 
-* HMAC_DRBG implementation derived from [google/rappor](https://github.com/google/rappor)
-* Icon made by [Maxim Basinski](https://www.flaticon.com/authors/maxim-basinski) from www.flaticon.com
+* Javascript reference implementation [kevinAlbs/Base122](https://github.com/kevinAlbs/Base122)
 
 # License
 

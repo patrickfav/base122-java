@@ -4,9 +4,16 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>at.favre.encoding</groupId>
+    <groupId>at.favre.lib</groupId>
     <artifactId>base122</artifactId>
     <version>0.1.0</version>
+    <packaging>jar</packaging>
+
+    <name>Base122 Encoder</name>
+    <description>A Base122 byte-to-text encoder using format referenced in http://blog.kevinalbs.com/base122
+    </description>
+    <url>https://github.com/patrickfav/base122-java</url>
+    <inceptionYear>2017</inceptionYear>
 
     <prerequisites>
         <maven>3.1.0</maven>
@@ -35,8 +42,8 @@
                 <configuration>
                     <compilerId>javac-with-errorprone</compilerId>
                     <forceJavacCompilerUse>true</forceJavacCompilerUse>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>1.7</source>
+                    <target>1.7</target>
                 </configuration>
                 <dependencies>
                     <dependency>
@@ -53,6 +60,32 @@
                         <version>2.0.5</version>
                     </dependency>
                 </dependencies>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>3.0.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>3.0.0-M1</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -90,7 +123,7 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <skip>false</skip> <!-- set this to true if fail because of missing credentials -->
+                    <skip>true</skip> <!-- set this to true if fail because of missing credentials -->
                     <keystore>keystore.jks</keystore>
                     <alias>pfopensource</alias>
                     <storepass>${env.OPENSOURCE_PROJECTS_KS_PW}</storepass>
@@ -100,7 +133,7 @@
             <plugin>
                 <groupId>net.nicoulaj.maven.plugins</groupId>
                 <artifactId>checksum-maven-plugin</artifactId>
-                <version>1.5</version>
+                <version>1.6</version>
                 <executions>
                     <execution>
                         <goals>
@@ -112,7 +145,9 @@
                     <algorithms>
                         <algorithm>SHA-256</algorithm>
                     </algorithms>
-                    <attachChecksums>true</attachChecksums>
+                    <shasumSummary>true</shasumSummary>
+                    <shasumSummaryFile>checksum-sha256.txt</shasumSummaryFile>
+                    <attachChecksums>false</attachChecksums>
                     <quiet>false</quiet>
                 </configuration>
             </plugin>
@@ -127,5 +162,51 @@
             <version>4.12</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>commons-codec</groupId>
+            <artifactId>commons-codec</artifactId>
+            <version>1.10</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
+    <developers>
+        <developer>
+            <id>patrickfav</id>
+            <name>Patrick Favre-Bulle</name>
+            <email>patrick.favrebulle@gmail.com</email>
+        </developer>
+    </developers>
+
+    <distributionManagement>
+        <repository>
+            <id>bintray-patrickfav</id>
+            <name>patrickfav-base122</name>
+            <url>https://api.bintray.com/maven/patrickfav/maven/base122/;publish=1</url>
+        </repository>
+    </distributionManagement>
+
+    <licenses>
+        <license>
+            <name>Apache License, Version 2.0</name>
+            <url>https://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
+        </license>
+    </licenses>
+
+    <scm>
+        <connection>https://github.com/patrickfav/base122-java.git</connection>
+        <developerConnection>https://github.com/patrickfav/base122-java.git</developerConnection>
+        <tag>HEAD</tag>
+        <url>https://github.com/patrickfav/base122-java</url>
+    </scm>
+
+    <issueManagement>
+        <system>Github</system>
+        <url>https://github.com/patrickfav/base122-java/issues</url>
+    </issueManagement>
+
+    <ciManagement>
+        <system>Travis</system>
+        <url>https://github.com/patrickfav/base122-java</url>
+    </ciManagement>
 </project>
