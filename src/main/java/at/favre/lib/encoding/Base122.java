@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
 
 public class Base122 {
+    private static final byte kShortened = 0b111; // Uses the illegal index to signify the last two-byte char encodes <= 7 bits.
     private final static byte[] ILLEGAL_BYTES = new byte[]{
             0 // null
             , 10 // newline
@@ -15,7 +16,6 @@ public class Base122 {
 
     static class Encoder {
         private static final byte STOP_BYTE = (byte) 0b1000_0000;
-        private static final byte kShortened = 0b111; // Uses the illegal index to signify the last two-byte char encodes <= 7 bits.
         private int curIndex = 0;
         private int curBit = 0;
         private byte[] rawData;
@@ -96,6 +96,51 @@ public class Base122 {
 
     public String encode(byte[] data) {
         return new Encoder(data).encode();
+    }
+
+    public byte[] decode(String encodedBase122) {
+        return new Decoder().decode(encodedBase122);
+    }
+
+    final static class Decoder {
+        private final ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        private byte curByte = 0;
+        private byte bitOfByte = 0;
+
+        void pushNext7(byte nextElement) {
+            nextElement <<= 1;
+            // Align this byte to offset for current byte.
+            curByte |= (nextElement >>> bitOfByte);
+            bitOfByte += 7;
+            if (bitOfByte >= 8) {
+                outputStream.write(curByte);
+                bitOfByte -= 8;
+                // Now, take the remainder, left shift by what has been taken.
+                curByte = (byte) ((nextElement << (7 - bitOfByte)) & 255);
+            }
+        }
+
+        byte[] decode(String base122Data) {
+            byte[] utf8Bytes = base122Data.getBytes(StandardCharsets.UTF_8);
+
+            for (int i = 0; i < utf8Bytes.length; i++) {
+                // Check if this is a two-byte character.
+                if (utf8Bytes[i] > 127) {
+                    // Note, the charCodeAt will give the codePoint, thus
+                    // 0b110xxxxx 0b10yyyyyy will give => xxxxxyyyyyy
+                    int illegalIndex = (utf8Bytes[i] >>> 8) & 7; // 7 = 0b111.
+                    // We have to first check if this is a shortened two-byte character, i.e. if it only
+                    // encodes <= 7 bits.
+                    if (illegalIndex != kShortened) pushNext7(ILLEGAL_BYTES[illegalIndex]);
+                    // Always push the rest.
+                    pushNext7((byte) (utf8Bytes[i] & 127));
+                } else {
+                    // One byte characters can be pushed directly.
+                    pushNext7(utf8Bytes[i]);
+                }
+            }
+            return outputStream.toByteArray();
+        }
     }
 
 }
