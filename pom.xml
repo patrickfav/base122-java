@@ -168,6 +168,12 @@
             <version>1.10</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>at.favre.lib</groupId>
+            <artifactId>bytes</artifactId>
+            <version>0.4.3</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
     <developers>
         <developer>

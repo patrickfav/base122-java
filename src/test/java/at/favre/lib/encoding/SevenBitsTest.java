@@ -8,7 +8,7 @@ import java.nio.charset.StandardCharsets;
 
 import static org.junit.Assert.assertEquals;
 
-public class Base122Test {
+public class SevenBitsTest {
     @Before
     public void setUp() throws Exception {
     }
@@ -16,11 +16,11 @@ public class Base122Test {
     @Test
     public void next7bitOf2Bytes() throws Exception {
         Base122.Encoder encoder = new Base122.Encoder(new byte[]{
-                (byte) 0b0111111_0,
+                (byte) 0b1111111_0,
                 (byte) 0b000001_01
         });
 
-        assertExpected(0b0_0111111, encoder.next7Bit());
+        assertExpected(0b0_1111111, encoder.next7Bit());
         assertExpected(0b0_0000001, encoder.next7Bit());
         assertExpected(0b0_0100000, encoder.next7Bit());
     }
