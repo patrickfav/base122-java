@@ -107,7 +107,7 @@ public class Base122 {
         private byte curByte = 0;
         private byte bitOfByte = 0;
 
-        void pushNext7(byte nextElement) {
+        void pushNext7(int nextElement) {
             nextElement <<= 1;
             // Align this byte to offset for current byte.
             curByte |= (nextElement >>> bitOfByte);
@@ -133,7 +133,7 @@ public class Base122 {
                     // encodes <= 7 bits.
                     if (illegalIndex != kShortened) pushNext7(ILLEGAL_BYTES[illegalIndex]);
                     // Always push the rest.
-                    pushNext7((byte) (utf8Bytes[i] & 127));
+                    pushNext7(utf8Bytes[i] & 127);
                 } else {
                     // One byte characters can be pushed directly.
                     pushNext7(utf8Bytes[i]);
